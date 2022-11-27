@@ -5,11 +5,21 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    email: '',
   },
   mutations: {
+    setUser: (state, payload) => {
+      state.email = payload;
+    }
   },
   actions: {
+    setUser: (context, payload) => {
+      context.commit('setUser', payload);
+    }
   },
-  modules: {
+  getters: {
+    getUser: state => {
+      return state.email;
+    }
   }
 })

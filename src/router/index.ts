@@ -1,22 +1,78 @@
 import Vue from 'vue'
 import VueRouter, { RouteConfig } from 'vue-router'
-import Home from '../views/Home.vue'
+import Currencies from "../pages/Currencies.vue";
+import Login from "../pages/Login.vue";
+import Analytics from "@/pages/Analytics.vue";
+import Offers from "@/pages/Offers.vue";
+import Loyalty from "@/pages/Loyalty.vue";
+import Dispatch from "@/pages/Dispatch.vue";
+import Configurations from "@/pages/Configurations.vue";
 
 Vue.use(VueRouter)
 
 const routes: Array<RouteConfig> = [
   {
-    path: '/',
-    name: 'Home',
-    component: Home
+    path: "/",
+    redirect: () => {
+      return { path: '/currencies' }
+    }
   },
   {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    path: "/currencies",
+    name: "Currencies",
+    component: Currencies,
+    meta: {
+      hideHeader: false
+    }
+  },
+  {
+    path: "/login",
+    name: "Login",
+    component: Login,
+    meta: {
+      hideHeader: true,
+      hideNavigation: true,
+    }
+  },
+  {
+    path: "/analytics",
+    name: "Analytics",
+    component: Analytics,
+    meta: {
+      hideHeader: false
+    }
+  },
+  {
+    path: "/offers",
+    name: "Offers",
+    component: Offers,
+    meta: {
+      hideHeader: false
+    }
+  },
+  {
+    path: "/loyalty",
+    name: "Loyalty",
+    component: Loyalty,
+    meta: {
+      hideHeader: false
+    }
+  },
+  {
+    path: "/dispatch",
+    name: "Dispatch",
+    component: Dispatch,
+    meta: {
+      hideHeader: false
+    }
+  },
+  {
+    path: "/configurations",
+    name: "Configurations",
+    component: Configurations,
+    meta: {
+      hideHeader: false
+    }
   }
 ]
 

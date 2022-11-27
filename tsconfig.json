@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "module": "esnext",
+    "target": "es6",
+    "module": "es6",
     "strict": true,
     "jsx": "preserve",
     "importHelpers": true,
@@ -16,7 +16,8 @@
     ],
     "paths": {
       "@/*": [
-        "src/*"
+        "src/*",
+        "./*"
       ]
     },
     "lib": [
@@ -31,7 +32,9 @@
     "src/**/*.tsx",
     "src/**/*.vue",
     "tests/**/*.ts",
-    "tests/**/*.tsx"
+    "tests/**/*.tsx",
+    "src/components",
+    "src/custom.d.ts"
   ],
   "exclude": [
     "node_modules"
