@@ -128,9 +128,19 @@ export default Vue.extend({
     ]),
   },
   mounted() {
-    // if type is edit fetch currency to edit from store
+    //If type is edit fetch currency to edit from store
     if(this.componentType === 'edit') {
       this.currencyData = this.$store.state.editCurrency;
+    }
+  },
+  watch: {
+    // This is in case if the component is already rendered with 'add' type
+    componentType(newVal, oldVal) {
+      if(newVal === 'edit') {
+        this.currencyData = this.$store.state.editCurrency;
+      } else if(newVal === 'add') {
+        this.emptyCurrencyData();
+      }
     }
   }
 });
