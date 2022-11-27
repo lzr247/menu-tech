@@ -24,7 +24,6 @@ export default Vue.extend({
   },
   mounted() {
     const user = localStorage.getItem('menuLoggedIn');
-    console.log(user);
     this.$store.dispatch('setUser', user);
   }
 })

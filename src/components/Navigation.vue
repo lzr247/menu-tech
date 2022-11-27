@@ -12,7 +12,8 @@
   </nav>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue';
 import Analytics from "vue-material-design-icons/GoogleAnalytics.vue";
 import Offer from "vue-material-design-icons/Offer.vue";
 import Account from "vue-material-design-icons/Account.vue";
@@ -20,7 +21,7 @@ import CurrencyEur from "vue-material-design-icons/CurrencyEur.vue";
 import BikeFast from "vue-material-design-icons/BikeFast.vue";
 import Cog from "vue-material-design-icons/Cog.vue";
 
-export default {
+export default Vue.extend({
   name: "navigation-component",
   data() {
     return {
@@ -58,15 +59,17 @@ export default {
       ],
     };
   }
-};
+});
 </script>
 
 <style lang="scss" scoped>
+@import '@/styles/variables.scss';
+
 .navigation {
   width: 250px;
   min-width: 250px;
   background-color: #f2f2f2;
-  color: #000;
+  color: $color-black;
   padding: 20px 15px 0 15px;
   box-sizing: border-box;
 
@@ -84,9 +87,12 @@ export default {
     border-radius: 8px;
 
     &.router-link-exact-active.router-link-active {
-      color: #ff6600;
+      color: $color-primary;
       background-color: #f3e8e1;
 
+      .navigation__icon {
+        color: $color-primary;
+      }
     }
   }
 
@@ -95,11 +101,7 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
-
-    svg {
-      // Don't work :/
-      fill: #808080!important;
-    }
+    color: $color-gray-icons;
   }
 }
 </style>
