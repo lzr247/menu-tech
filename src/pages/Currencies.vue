@@ -26,7 +26,7 @@
           v-for="(currency, index) in filteredCurrencies" 
           :key="index"
           class="currencies__types clickable"
-          @click="showEditCurrency(currency); showAddCurrency = true;"
+          @click="showEditCurrency(currency);"
         >
           <div class="name"><b>{{ currency.name }}</b></div>
           <div class="wrapper">
@@ -40,10 +40,15 @@
       </section>
     </div>
 
-    <CurrencyManipulation 
-      v-if="showComponent"
-      :componentType="componentType"
-      @close="showComponent = false;"
+    <CurrencyAdd
+      v-if="showCurrencyAdd"
+      @close="showCurrencyAdd = false;"
+    />
+
+    <CurrencyEdit
+      v-if="showCurrencyEdit"
+      :key="editComponentKey"
+      @close="showCurrencyEdit = false;"
     />
 
   </div>
@@ -54,17 +59,19 @@ import { defineComponent } from 'vue';
 import IconPlus from "vue-material-design-icons/Plus.vue";
 import IconSeach from "vue-material-design-icons/Magnify.vue";
 import IconTrash from "vue-material-design-icons/TrashCanOutline.vue";
-import CurrencyManipulation from "@/components/CurrencyManipulation.vue";
+import CurrencyAdd from "@/components/CurrencyAdd.vue";
+import CurrencyEdit from "@/components/CurrencyEdit.vue";
 import { mapGetters, mapActions } from "vuex";
 import Currency from "@/interfaces/Currency";
 
 export default defineComponent({
   name: "page-currencies",
-  components: { IconPlus, IconSeach, IconTrash, CurrencyManipulation },
+  components: { IconPlus, IconSeach, IconTrash, CurrencyAdd, CurrencyEdit },
   data() {
     return {
-      showComponent: false,
-      componentType: '',
+      showCurrencyAdd: false,
+      showCurrencyEdit: false,
+      editComponentKey: 0,
       currency: {
         id: 0,
         name: '',
@@ -87,17 +94,18 @@ export default defineComponent({
       'deleteCurrency'
     ]),
     showAddCurrency() {
-      this.componentType = 'add';
-      this.showComponent = true;
+      this.showCurrencyEdit = false;
+      this.showCurrencyAdd = true;
     },
     showEditCurrency(currency: Currency) {
-      this.componentType = 'edit';
-      this.showComponent = true;
+      this.showCurrencyAdd = false;
+      this.showCurrencyEdit = true;
+      this.editComponentKey += 1;
       this.$store.dispatch('setEditCurrency', currency);
     },
   },
   watch: {
-    search(newVal, oldVal) {
+    search(newVal) {
       this.$store.commit('filterList', newVal);
     }
   }
@@ -224,6 +232,12 @@ export default defineComponent({
             justify-content: center;
             align-items: center;
             cursor: pointer;
+            padding: 2px 5px;
+            margin-right: 4px;
+
+            &:hover {
+              background-color: #f2f2f2;
+            }
           }
         }
       }

@@ -1,25 +1,13 @@
 <template>
   <div class="add-currency">
-    <!-- Add -->
-    <section v-if="componentType === 'add'" class="add-currency__nav">
-      <div class="add-currency__nav__first">
-        <IconClose @click="$emit('close')"/>
-        <h3>Add Currency</h3>
-      </div>
-      <div class="add-currency__nav__last">
-        <button class="button-cancel" @click="$emit('close')">Cancel</button>
-        <button class="button-save" type="submit" form="addCurrencyForm">Add</button>
-      </div>
-    </section>
-
     <!-- Edit -->
-    <section v-if="componentType === 'edit'" class="add-currency__nav">
+    <section class="add-currency__nav">
       <div class="add-currency__nav__first">
         <IconClose @click="$emit('close')"/>
         <h3>Edit Currency</h3>
       </div>
       <div class="add-currency__nav__last">
-        <button class="button-cancel" @click="$emit('close')">Cancel</button>
+        <button class="button-cancel" @click="$emit('close'); emptyCurrencyData();">Cancel</button>
         <button class="button-save" type="submit" form="addCurrencyForm">Save</button>
       </div>
     </section>
@@ -38,6 +26,7 @@
         <label for="code">Currency code</label>
         <input v-model="currencyData.isoMark" type="text" name="code" id="code" :class="currencyValidation.codeRequired ? 'input-error' : ''">
         <div v-if="currencyValidation.codeRequired" class="error-required">Please enter currency code</div>
+        <div v-if="currencyValidation.codeLength" class="error-required">ISO mark has to be length of three.</div>
 
         <label for="symbol">Currency symbol</label>
         <input v-model="currencyData.symbol" type="text" name="symbol" id="symbol" :class="currencyValidation.symbolRequired ? 'input-error' : ''">
@@ -56,9 +45,6 @@ import Currency from '@/interfaces/Currency';
 export default defineComponent({
   name: 'currency-manipulation',
   components: { IconClose },
-  props: {
-    componentType: String
-  },
   data() {
     return {
       currencyData: {
@@ -70,6 +56,7 @@ export default defineComponent({
       currencyValidation: {
         nameRequired: false,
         codeRequired: false,
+        codeLength: false,
         symbolRequired: false
       }
     }
@@ -83,34 +70,24 @@ export default defineComponent({
       } else if(!this.currencyData.isoMark) {
         this.currencyValidation.codeRequired = true;
         this.currencyValidation.nameRequired = false;
+      } else if(this.currencyData.isoMark.length !== 3) {
+        this.currencyValidation.codeRequired = false;
+        this.currencyValidation.nameRequired = false;
+        this.currencyValidation.codeLength = true;
       } else if(!this.currencyData.symbol) {
         this.currencyValidation.symbolRequired = true;
         this.currencyValidation.codeRequired = false;
         this.currencyValidation.nameRequired = false;
+        this.currencyValidation.codeLength = false;
       } else {
         this.currencyValidation.symbolRequired = false;
         this.currencyValidation.codeRequired = false;
         this.currencyValidation.nameRequired = false;
+        this.currencyValidation.codeLength = false;
 
-        // Check type
-        if(this.componentType === 'add') {
-          // Validation passed
-          // Check if the list is not empty
-          if(typeof this.$store.state.currencies[0] !== 'undefined') {
-            this.currencyData.id = this.$store.state.currencies[this.$store.state.currencies.length-1].id + 1;
-          } else {
-            this.currencyData.id = 0;
-          }
-
-          this.$store.dispatch('addCurrency', this.currencyData);
-          this.emptyCurrencyData();
-          this.$emit('close');
-
-        } else if(this.componentType === 'edit') {
-          this.$store.dispatch('editCurrency', this.currencyData);
-          this.emptyCurrencyData();
-          this.$emit('close');
-        }
+        this.$store.dispatch('editCurrency', this.currencyData);
+        this.emptyCurrencyData();
+        this.$emit('close');
       }
     },
     emptyCurrencyData() {
@@ -128,21 +105,8 @@ export default defineComponent({
     ]),
   },
   mounted() {
-    //If type is edit fetch currency to edit from store
-    if(this.componentType === 'edit') {
-      this.currencyData = this.$store.state.editCurrency;
-    }
+    this.currencyData = this.$store.state.editCurrency;
   },
-  watch: {
-    // This is in case if the component is already rendered with 'add' type
-    componentType(newVal, oldVal) {
-      if(newVal === 'edit') {
-        this.currencyData = this.$store.state.editCurrency;
-      } else if(newVal === 'add') {
-        this.emptyCurrencyData();
-      }
-    }
-  }
 });
 </script>
 

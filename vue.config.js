@@ -2,7 +2,6 @@ module.exports = {
   chainWebpack: (config) => {
     config.module.rules.delete("svg");
   },
-
   configureWebpack: {
     module: {
       rules: [
@@ -16,5 +15,4 @@ module.exports = {
       extensions: [".js", ".jsx", ".ts", ".tsx"],
     },
   },
-
 };
