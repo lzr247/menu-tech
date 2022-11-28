@@ -50,14 +50,15 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import { defineComponent } from 'vue';
 import IconPlus from "vue-material-design-icons/Plus.vue";
 import IconSeach from "vue-material-design-icons/Magnify.vue";
 import IconTrash from "vue-material-design-icons/TrashCanOutline.vue";
 import CurrencyManipulation from "@/components/CurrencyManipulation.vue";
 import { mapGetters, mapActions } from "vuex";
+import Currency from "@/interfaces/Currency";
 
-export default Vue.extend({
+export default defineComponent({
   name: "page-currencies",
   components: { IconPlus, IconSeach, IconTrash, CurrencyManipulation },
   data() {
@@ -89,7 +90,7 @@ export default Vue.extend({
       this.componentType = 'add';
       this.showComponent = true;
     },
-    showEditCurrency(currency) {
+    showEditCurrency(currency: Currency) {
       this.componentType = 'edit';
       this.showComponent = true;
       this.$store.dispatch('setEditCurrency', currency);

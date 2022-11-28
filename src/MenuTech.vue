@@ -9,13 +9,13 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 import Header from '@/components/Header.vue';
 import Navigation from '@/components/Navigation.vue';
 import { mapGetters } from 'vuex';
 import Currency from './interfaces/Currency';
 
-export default Vue.extend({
+export default defineComponent({
   name: 'menu-tech',
   components: { Header, Navigation },
   computed: {
@@ -33,11 +33,10 @@ export default Vue.extend({
     this.$store.dispatch('setUser', user);
 
     // Check if there are currencies in the localStorage -> if there are -> fetch and set to store
-    if(JSON.parse(localStorage.getItem('menuCurrencies') || "")) {
+    if(JSON.parse(localStorage.getItem('menuCurrencies') || "") && !this.$store.state.currencies.length) {
       let getCurrencies: Currency[] = [];
       
       getCurrencies = JSON.parse(localStorage.getItem('menuCurrencies') || "");
-      console.log(getCurrencies);
       getCurrencies.forEach(el => {
         this.$store.commit('addCurrency', el);
       });

@@ -48,12 +48,12 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 import IconClose from "vue-material-design-icons/Close.vue";
 import { mapGetters } from 'vuex';
 import Currency from '@/interfaces/Currency';
 
-export default Vue.extend({
+export default defineComponent({
   name: 'currency-manipulation',
   components: { IconClose },
   props: {

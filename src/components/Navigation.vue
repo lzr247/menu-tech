@@ -13,7 +13,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 import Analytics from "vue-material-design-icons/GoogleAnalytics.vue";
 import Offer from "vue-material-design-icons/Offer.vue";
 import Account from "vue-material-design-icons/Account.vue";
@@ -21,7 +21,7 @@ import CurrencyEur from "vue-material-design-icons/CurrencyEur.vue";
 import BikeFast from "vue-material-design-icons/BikeFast.vue";
 import Cog from "vue-material-design-icons/Cog.vue";
 
-export default Vue.extend({
+export default defineComponent({
   name: "navigation-component",
   data() {
     return {

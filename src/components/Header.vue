@@ -16,11 +16,11 @@
 </template>
 
 <script lang='ts'>
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 import IconBell from 'vue-material-design-icons/Bell.vue'
 import IconAccount from 'vue-material-design-icons/Account.vue'
 
-export default Vue.extend({
+export default defineComponent({
   name: 'header-component',
   components: { IconBell, IconAccount },
   props: {

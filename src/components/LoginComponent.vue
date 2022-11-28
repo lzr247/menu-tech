@@ -47,9 +47,9 @@
 <script lang="ts">
 import MenuIcon from "@/assets/icons/menu.svg";
 import User from "@/interfaces/User";
-import Vue from "vue";
+import { defineComponent } from "vue";
 
-export default Vue.extend({
+export default defineComponent({
   name: "login-component",
   components: { MenuIcon },
   data() {
