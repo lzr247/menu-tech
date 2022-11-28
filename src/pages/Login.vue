@@ -11,6 +11,11 @@ import LoginComponent from "../components/LoginComponent.vue";
 export default Vue.extend({
   name: "login-page",
   components: { LoginComponent },
+  created() {
+    if (localStorage.getItem("menuLoggedIn")) {
+      this.$router.push({ name: "Currencies" });
+    }
+  }
 });
 </script>
 

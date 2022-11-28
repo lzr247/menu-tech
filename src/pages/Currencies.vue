@@ -9,7 +9,7 @@
 
       <section class="currencies__search">
         <IconSeach/>
-        <input type="search" name="currency-search" id="" placeholder="Search" />
+        <input v-model="search" type="search" name="currency-search" id="" placeholder="Search" />
       </section>
 
       <section class="currencies__currency-list">
@@ -23,7 +23,7 @@
         <span class='currencies__no-currencies' v-if='!currenciesExist'>There are no currencies added</span>
         <div 
           v-else 
-          v-for="(currency, index) in currencies" 
+          v-for="(currency, index) in filteredCurrencies" 
           :key="index"
           class="currencies__types clickable"
           @click="showEditCurrency(currency); showAddCurrency = true;"
@@ -33,7 +33,7 @@
             <div class="code">{{ currency.isoMark }}</div>
             <div class="symbol">
               <span>{{ currency.symbol }}</span>
-              <IconTrash @click="deleteCurrency(currency.id)"/>
+              <IconTrash @click="deleteCurrency(currency.id); showComponent = false;"/>
             </div>
           </div>
         </div>
@@ -49,15 +49,15 @@
   </div>
 </template>
 
-<script>
-// import Vue from "vue";
+<script lang="ts">
+import Vue from "vue";
 import IconPlus from "vue-material-design-icons/Plus.vue";
 import IconSeach from "vue-material-design-icons/Magnify.vue";
 import IconTrash from "vue-material-design-icons/TrashCanOutline.vue";
 import CurrencyManipulation from "@/components/CurrencyManipulation.vue";
 import { mapGetters, mapActions } from "vuex";
 
-export default {
+export default Vue.extend({
   name: "page-currencies",
   components: { IconPlus, IconSeach, IconTrash, CurrencyManipulation },
   data() {
@@ -69,20 +69,16 @@ export default {
         name: '',
         isoMark: '',
         symbol: ''
-      }
+      },
+      search: '',
     };
-  },
-  mounted() {
-    if (!localStorage.getItem("menuLoggedIn")) {
-      this.$router.push({ name: "Login" });
-    }
   },
   computed: {
     ...mapGetters([
-      'currencies'
+      'filteredCurrencies'
     ]),
     currenciesExist() {
-      return this.$store.state.currencies.length;
+      return this.$store.state.filteredCurrencies.length;
     }
   },
   methods: {
@@ -97,9 +93,14 @@ export default {
       this.componentType = 'edit';
       this.showComponent = true;
       this.$store.dispatch('setEditCurrency', currency);
+    },
+  },
+  watch: {
+    search(newVal, oldVal) {
+      this.$store.commit('filterList', newVal);
     }
   }
-};
+});
 </script>
 
 <style lang="scss">

@@ -65,7 +65,7 @@ export default Vue.extend({
     login() {
       // Custom validation
       let emailValid = this.formData.email.toLowerCase().match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
-      let passwordValid = this.formData.password && this.formData.password.length > 6;
+      let passwordValid = this.formData.password && this.formData.password.length >= 6;
 
       if(emailValid && passwordValid) {
         this.error = false;

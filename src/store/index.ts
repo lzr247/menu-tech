@@ -8,7 +8,9 @@ export default new Vuex.Store({
   state: {
     email: '',
     currencies: [] as Currency[],
-    editCurrency: {} as Currency
+    filteredCurrencies: [] as Currency[],
+    editCurrency: {} as Currency,
+    search: '',
   },
   mutations: {
     setUser: (state, payload) => {
@@ -16,10 +18,14 @@ export default new Vuex.Store({
     },
     addCurrency: (state, payload) => {
       state.currencies.push(payload);
+      localStorage.setItem('menuCurrencies', JSON.stringify(state.currencies));
+      state.filteredCurrencies = state.currencies;
     },
     deleteCurrency: (state, payload) => {
       const elToDelete: Currency = state.currencies.find((el) => el.id === payload)!;
       state.currencies.splice(state.currencies.indexOf(elToDelete), 1);
+      localStorage.setItem('menuCurrencies', JSON.stringify(state.currencies));
+      state.filteredCurrencies = state.currencies;
     },
     setEditCurrency: (state, payload) => {
       state.editCurrency = payload;
@@ -27,6 +33,18 @@ export default new Vuex.Store({
     editCurrency: (state, payload) => {
       const indexToEdit = state.currencies.findIndex(el => el.id === payload.id);
       state.currencies[indexToEdit] = payload;
+      localStorage.setItem('menuCurrencies', JSON.stringify(state.currencies));
+      state.filteredCurrencies = state.currencies;
+    },
+    filterList: (state, payload) => {
+      // Here change search state and then change array if not empty
+      state.search = payload;
+
+      state.filteredCurrencies = state.currencies.filter((currency) => {
+        if(Object.values(currency).some((objVal) => objVal.toString().toLowerCase().includes(state.search.toLowerCase()))) {
+          return currency;
+        }
+      })
     }
   },
   actions: {
@@ -53,5 +71,8 @@ export default new Vuex.Store({
     currencies: state => {
       return state.currencies;
     },
+    filteredCurrencies: state => {
+      return state.filteredCurrencies;
+    }
   }
 })

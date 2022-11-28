@@ -13,6 +13,7 @@ import Vue from 'vue';
 import Header from '@/components/Header.vue';
 import Navigation from '@/components/Navigation.vue';
 import { mapGetters } from 'vuex';
+import Currency from './interfaces/Currency';
 
 export default Vue.extend({
   name: 'menu-tech',
@@ -23,8 +24,24 @@ export default Vue.extend({
     ])
   },
   mounted() {
+    // If there's no user -> redirect to login
+    if (!localStorage.getItem("menuLoggedIn")) {
+      this.$router.push({ name: "Login" });
+    }
+
     const user = localStorage.getItem('menuLoggedIn');
     this.$store.dispatch('setUser', user);
+
+    // Check if there are currencies in the localStorage -> if there are -> fetch and set to store
+    if(JSON.parse(localStorage.getItem('menuCurrencies') || "")) {
+      let getCurrencies: Currency[] = [];
+      
+      getCurrencies = JSON.parse(localStorage.getItem('menuCurrencies') || "");
+      console.log(getCurrencies);
+      getCurrencies.forEach(el => {
+        this.$store.commit('addCurrency', el);
+      });
+    }
   }
 })
 </script>
