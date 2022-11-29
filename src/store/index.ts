@@ -41,7 +41,7 @@ export default new Vuex.Store({
       state.search = payload;
 
       state.filteredCurrencies = state.currencies.filter((currency) => {
-        if(Object.values(currency).some((objVal) => objVal.toString().toLowerCase().includes(state.search.toLowerCase()))) {
+        if(Object.values(currency).slice(1).some((objVal) => objVal.toString().toLowerCase().includes(state.search.toString().toLowerCase()))) {
           return currency;
         }
       })
